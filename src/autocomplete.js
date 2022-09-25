@@ -101,7 +101,11 @@ angular.module('google.places', [])
 
             function onKeydown(event) {
               if ($scope.predictions.length === 0 || indexOf(hotkeys, event.which) === -1) {
-                document.getElementsByClassName('pac-container')[0].scrollIntoView(false);
+                document.getElementById('gp_ad_end_anchor').scrollIntoView({block: "center"})
+                // trick to force the focus to follow the input on iOS
+                $scope.doNotClearPredictions = true
+                event.target.blur();
+                event.target.focus();
                 return;
               }
 
@@ -134,6 +138,11 @@ angular.module('google.places', [])
             }
 
             function onBlur(event) {
+              if ( $scope.doNotClearPredictions ) {
+                $scope.doNotClearPredictions = false;
+                return;
+              }
+
               if ($scope.predictions.length === 0) {
                 return;
               }
@@ -345,7 +354,8 @@ angular.module('google.places', [])
       '       ng-repeat="prediction in predictions track by $index" ng-class="{\'pac-item-selected\': isActive($index) }"',
       '       ng-mouseenter="selectActive($index)" ng-click="selectPrediction($index)" role="option" id="{{prediction.id}}">',
       '  </div>',
-      '</div>'
+      '</div>',
+      '<div id="gp_ad_end_anchor" style="height: 1px">&nbsp;</div>'
     ];
 
     return {
