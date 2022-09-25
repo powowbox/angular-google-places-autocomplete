@@ -1,6 +1,20 @@
 angular-google-places-autocomplete
 ================
 
+Modifications on this fork
+---------------------------
+
+Adapt the plugin for cordova. 
+
+In the original code, the list of adresses is added as a children of the body. That implies the list doesn't scroll with the form.
+
+Here the div list is added to the same parent as the input. Thus the list scrolls with the window.
+
+Moreover, if the list is displayed below the keyboard, the window is automatically scrolled to display it.
+
+The number of suggestions is limited to 3 to avoid to take too much place on the screen.
+
+
 Angular directive for the Google Places Autocomplete component.
 
 Installation
