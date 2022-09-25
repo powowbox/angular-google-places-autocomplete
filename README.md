@@ -1,6 +1,8 @@
 angular-google-places-autocomplete
 ================
 
+Angular directive for the Google Places Autocomplete component.
+
 Modifications on this fork
 ---------------------------
 
@@ -15,7 +17,6 @@ Moreover, if the list is displayed below the keyboard, the window is automatical
 The number of suggestions is limited to 3 to avoid to take too much place on the screen.
 
 
-Angular directive for the Google Places Autocomplete component.
 
 Installation
 ------------
