@@ -106,6 +106,9 @@ angular.module('google.places', [])
                 $scope.doNotClearPredictions = true
                 event.target.blur();
                 event.target.focus();
+                if ( event.which === 8 /*back delete*/ && $scope.model.length === 1 ) {
+                  clearPredictions();
+                }
                 return;
               }
 
