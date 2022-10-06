@@ -70,6 +70,14 @@ angular.module('google.places', [])
               $scope.$watch('selected', select);
             }
 
+            function isIos() {
+              var userAgent = navigator.userAgent || navigator.vendor;
+              if (!userAgent) {
+                return false;
+              }
+              return (/iPad|iPhone|iPod/.test(userAgent));
+            }
+
             function initAutocompleteDrawer($scope) {
               // Drawer element used to display predictions
               var drawerElement = angular.element('<div g-places-autocomplete-drawer></div>'),
@@ -101,14 +109,19 @@ angular.module('google.places', [])
 
             function onKeydown(event) {
               if ($scope.predictions.length === 0 || indexOf(hotkeys, event.which) === -1) {
-                document.getElementById('gp_ad_end_anchor').scrollIntoView({block: "center"})
-                // trick to force the focus to follow the input on iOS
-                $scope.doNotClearPredictions = true
-                event.target.blur();
-                event.target.focus();
-                if ( event.which === 8 /*back delete*/ && $scope.model.length === 1 ) {
+                document.getElementById('gp_ad_end_anchor').scrollIntoView({block: "center"});
+
+                if (isIos()) {
+                  // trick to force the focus to follow the input on iOS
+                  $scope.doNotClearPredictions = true
+                  event.target.blur();
+                  event.target.focus();
+                }
+
+                if ( (event.which === 8 ||  event.which === 229) /*back delete*/ && $scope.input.val().length === 1 ) {
                   clearPredictions();
                 }
+
                 return;
               }
 
