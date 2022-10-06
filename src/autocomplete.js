@@ -70,12 +70,16 @@ angular.module('google.places', [])
               $scope.$watch('selected', select);
             }
 
-            function isIos() {
+            function isIos15AndMore() {
               var userAgent = navigator.userAgent || navigator.vendor;
               if (!userAgent) {
                 return false;
               }
-              return (/iPad|iPhone|iPod/.test(userAgent));
+              var matchVersion = userAgent.match( /(iPad|iPhone|iPod) +OS +([0-9][0-9])/);
+              if ( !matchVersion ) {
+                return false;
+              }
+              return  parseInt(matchVersion[2]) >= 15;
             }
 
             function initAutocompleteDrawer($scope) {
@@ -111,7 +115,7 @@ angular.module('google.places', [])
               if ($scope.predictions.length === 0 || indexOf(hotkeys, event.which) === -1) {
                 document.getElementById('gp_ad_end_anchor').scrollIntoView({block: "center"});
 
-                if (isIos()) {
+                if (isIos15AndMore()) {
                   // trick to force the focus to follow the input on iOS
                   $scope.doNotClearPredictions = true
                   event.target.blur();
