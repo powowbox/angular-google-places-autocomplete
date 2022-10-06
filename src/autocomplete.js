@@ -26,7 +26,7 @@ angular.module('google.places', [])
    * <input type="text" g-places-autocomplete ng-model="myScopeVar" />
    */
   .directive('gPlacesAutocomplete',
-    [ '$parse', '$compile', '$timeout', '$document', 'googlePlacesApi',
+    ['$parse', '$compile', '$timeout', '$document', 'googlePlacesApi',
       function ($parse, $compile, $timeout, $document, google) {
 
         return {
@@ -38,7 +38,8 @@ angular.module('google.places', [])
             forceSelection: '=?',
             customPlaces: '=?'
           },
-          controller: ['$scope', function ($scope) {}],
+          controller: ['$scope', function ($scope) {
+          }],
           link: function ($scope, element, attrs, controller) {
             var keymap = {
                 tab: 9,
@@ -88,7 +89,7 @@ angular.module('google.places', [])
               $scope.input.parent().append($drawer);
               // body.append($drawer);  // Append to DOM
 
-              $scope.$on('$destroy', function() {
+              $scope.$on('$destroy', function () {
                 $drawer.remove();
               });
             }
@@ -141,7 +142,7 @@ angular.module('google.places', [])
             }
 
             function onBlur(event) {
-              if ( $scope.doNotClearPredictions ) {
+              if ($scope.doNotClearPredictions) {
                 $scope.doNotClearPredictions = false;
                 return;
               }
@@ -153,7 +154,7 @@ angular.module('google.places', [])
               if ($scope.forceSelection) {
                 $scope.selected = ($scope.selected === -1) ? 0 : $scope.selected;
               }
-              $timeout(function(){
+              $timeout(function () {
                 $scope.$digest();
 
                 $scope.$apply(function () {
@@ -176,17 +177,21 @@ angular.module('google.places', [])
                   $scope.model = prediction.place;
                   $scope.$emit('g-places-autocomplete:select', prediction.place);
                   $timeout(function () {
-                    controller.$viewChangeListeners.forEach(function (fn) { fn(); });
+                    controller.$viewChangeListeners.forEach(function (fn) {
+                      fn();
+                    });
                   });
                 });
               } else {
-                placesService.getDetails({ placeId: prediction.place_id }, function (place, status) {
+                placesService.getDetails({placeId: prediction.place_id}, function (place, status) {
                   if (status == google.maps.places.PlacesServiceStatus.OK) {
                     $scope.$apply(function () {
                       $scope.model = place;
                       $scope.$emit('g-places-autocomplete:select', place);
                       $timeout(function () {
-                        controller.$viewChangeListeners.forEach(function (fn) { fn(); });
+                        controller.$viewChangeListeners.forEach(function (fn) {
+                          fn();
+                        });
                       });
                     });
                   }
@@ -203,7 +208,7 @@ angular.module('google.places', [])
 
               $scope.query = viewValue;
 
-              request = angular.extend({ input: viewValue }, $scope.options);
+              request = angular.extend({input: viewValue}, $scope.options);
               autocompleteService.getPlacePredictions(request, function (predictions, status) {
                 $scope.$apply(function () {
                   var customPlacePredictions;
@@ -292,12 +297,12 @@ angular.module('google.places', [])
                 if (q.length > 0) {
                   if (fragment.length >= q.length) {
                     if (startsWith(fragment, q)) {
-                      matched_substrings.push({ length: q.length, offset: i });
+                      matched_substrings.push({length: q.length, offset: i});
                     }
                     q = '';  // no more matching to do
                   } else {
                     if (startsWith(q, fragment)) {
-                      matched_substrings.push({ length: fragment.length, offset: i });
+                      matched_substrings.push({length: fragment.length, offset: i});
                       q = q.replace(fragment, '').trim();
                     } else {
                       q = '';  // no more matching to do
@@ -363,7 +368,7 @@ angular.module('google.places', [])
 
     return {
       restrict: 'A',
-      scope:{
+      scope: {
         input: '=',
         query: '=',
         predictions: '=',
@@ -431,10 +436,10 @@ angular.module('google.places', [])
 
     return {
       restrict: 'A',
-      scope:{
-        index:'=',
-        prediction:'=',
-        query:'='
+      scope: {
+        index: '=',
+        prediction: '=',
+        query: '='
       },
       template: TEMPLATE.join('')
     };
